@@ -1,0 +1,37 @@
+<!-- base.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UPI Fraud Detection</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 font-sans">
+    <!-- Navbar -->
+    <nav class="bg-blue-600 p-4 shadow-md">
+        <div class="container mx-auto flex items-center justify-between">
+            <a href="{{ url_for('predict') }}" class="text-white text-2xl font-bold">Fraud Detection</a>
+            <ul class="flex space-x-4">
+                <li><a href="{{ url_for('predict') }}" class="text-white hover:text-yellow-300">Home</a></li>
+                {% if current_user.is_authenticated %}
+                    <li><a href="{{ url_for('logout') }}" class="text-white hover:text-yellow-300">Logout</a></li>
+                {% else %}
+                    <li><a href="{{ url_for('login') }}" class="text-white hover:text-yellow-300">Login</a></li>
+                    <li><a href="{{ url_for('register') }}" class="text-white hover:text-yellow-300">Register</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mx-auto mt-8 p-6 bg-white shadow-lg rounded-lg">
+        {% block content %}{% endblock %}
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-blue-600 text-white text-center p-4 mt-8">
+        <p>&copy; 2025 UPI Fraud Detection System. All Rights Reserved.</p>
+    </footer>
+</body>
+</html>

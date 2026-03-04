@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Logged Out | UPI Fraud Detection</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-card" style="text-align: center;">
+            <h2>You have been logged out</h2>
+            <p>Thank you for using the UPI Fraud Detection system.</p>
+            <a href="{{ url_for('login') }}">
+                <button style="margin-top: 1rem;">Back to Login</button>
+            </a>
+        </div>
+    </div>
+</body>
+</html>

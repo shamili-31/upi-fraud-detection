@@ -1,0 +1,216 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(to right, #e3edf7, #f6f9fc); /* Updated background */
+  color: #333;
+  overflow-y: auto;
+}
+/* background for login/registration */
+body.login-bg {
+  background: linear-gradient(to right, #0f2027, #203a43, #2c5364); /* Gradient fallback */
+  background-image: url('/static/images/background.jpg'); 
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+/* Center container */
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;         /* ✅ Better than fixed height */
+  padding: 20px;             /* ✅ Gives breathing space on small screens */
+  box-sizing: border-box;
+}
+.g-recaptcha {
+  margin: 15px 0 10px 0;   /* top right bottom left */
+  display: flex;
+  justify-content: center;
+}
+/* Login card */
+.login-card {
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 40px 30px;
+  border-radius: 12px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 500px;
+  box-sizing: border-box;  /* ✅ Prevent padding overflow */
+}
+h3{
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #333;
+}
+label {
+  display: block;
+  margin-top: 1rem;
+  font-weight: 600;
+}
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="password"] {
+  width: 100%;
+  padding: 0.75rem;
+  margin-top: 0.3rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-sizing: border-box;
+}
+button {
+  width: 100%;
+  padding: 0.75rem;
+  margin-top: 0.5rem; /* Reduced spacing */
+  background-color: #3498db;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+button:hover {
+  background-color: #2980b9;
+}
+.flash.success {
+  background-color: #d4edda;
+  color: #155724;
+  padding: 0.75rem;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+}
+.flash.danger {
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 0.75rem;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+}
+p {
+  text-align: center;
+  margin-top: 1rem;
+}
+a {
+  color: #3498db;
+  text-decoration: none;
+}
+.result-safe {
+  color: #16a34a;
+  font-weight: bold;
+}
+body.dark-mode {
+    background-color: #121212;
+    color: #e0e0e0;
+    background-blend-mode: multiply;
+}
+body.dark-mode .btn-primary {
+    background-color: #bb86fc;
+    border-color: #bb86fc;
+}
+body.dark-mode .btn-outline-secondary {
+    color: #e0e0e0;
+    border-color: #555;
+}
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: -250px;
+    width: 300px;
+    height: 100%;
+    background-color: #333;
+    color: white;
+    padding-top: 60px;
+    transition: left 0.3s ease;
+    z-index: 2;
+}
+.sidebar.show {
+    left: 0;
+}
+.sidebar a {
+    display: flex;                        /* Align icon and text */
+    align-items: center;
+    gap: 12px;                            /* Space between icon and text */
+    padding: 18px 24px;
+    font-size: 18px !important;           /* Slightly bigger */
+    font-weight: 600 !important;          /* More bold */
+    color: white !important;
+    text-decoration: none;
+    transition: background 0.3s ease;
+}
+
+.sidebar a:hover {
+    background-color: #555;
+}
+
+.sidebar a i {
+    font-size: 20px !important;           /* Icon size */
+}
+body.dark-mode #chartContainer {
+    background-color: #2a2a2a;
+    border-color: #444;
+}
+/* Add this CSS */
+#settings-section {
+  display: none;
+  position: fixed; /* fixed on screen */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  max-width: 90%;
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+  z-index: 9999;
+  overflow-y: auto;
+  max-height: 80vh;
+}
+
+/* Dark mode override */
+body.dark-mode #settings-section {
+  background-color: #2a2a2a;
+  color: #e0e0e0;
+}
+
+/* Optional: Add a semi-transparent backdrop */
+#settings-backdrop {
+  display: none;
+  position: fixed;
+  top:0;
+  left:0;
+  width:100vw;
+  height:100vh;
+  background: rgba(0,0,0,0.4);
+  z-index: 9998;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

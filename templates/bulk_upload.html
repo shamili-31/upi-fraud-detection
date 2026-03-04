@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Bulk Transaction Fraud Prediction</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  
+  <!-- ✅ Add Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    body {
+      background: #f8f9fa;
+      font-family: Arial, sans-serif;
+      padding-top: 60px;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .card {
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    .card-header {
+      background-color: #ffffff;
+      border-bottom: none;
+      font-size: 1.4rem;
+      font-weight: 600;
+      text-align: center;
+    }
+    .card-body {
+      background-color: #ffffff;
+    }
+    .instructions {
+      background: #e9ecef;
+      border-radius: 8px;
+      padding: 15px;
+      margin-bottom: 20px;
+      color: #495057;
+      font-size: 0.95rem;
+    }
+    .results-table {
+      max-height: 300px;
+      overflow-y: auto;
+      margin-top: 20px;
+    }
+    .stats {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="card mb-4">
+      <div class="card-header">
+        📁 Bulk Transaction Fraud Prediction
+      </div>
+      <div class="card-body">
+        
+        <!-- Instructions -->
+        <div class="instructions">
+          <strong>How to use:</strong>
+          <ul class="mb-0">
+            <li>Upload a <code>.csv</code> file containing multiple UPI transactions.</li>
+            <li>Required columns (case-sensitive): <code>Amount</code>, <code>FailedAttempts</code>, <code>TransactionFrequency</code>, <code>AvgTransactionAmount</code>, <code>Timestamp</code>, <code>TransactionType</code>.</li>
+            <li>Ensure <code>Timestamp</code> is in a standard format (e.g., <code>YYYY-MM-DD HH:MM:SS</code>).</li>
+            <li>Click “Upload & Predict” to process all rows. Results will appear below, along with summary statistics and a pie chart.</li>
+          </ul>
+        </div>
+
+        <!-- Upload Form -->
+        <form method="POST" action="{{ url_for('bulk_predict') }}" enctype="multipart/form-data" class="mb-3">
+          <div class="mb-3">
+            <label for="transactionFile" class="form-label">Choose CSV file:</label>
+            <input type="file" class="form-control" id="transactionFile" name="file" accept=".csv" required />
+          </div>
+          <button type="submit" class="btn btn-success w-100">📈 Upload & Predict</button>
+          <a href="{{ url_for('index') }}" class="btn btn-primary mt-3">Go Back to Dashboard</a>
+        </form>
+
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, msg in messages %}
+              <div class="alert alert-{{ category }} mt-3">{{ msg }}</div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+
+        <!-- Results Display -->
+        {% if bulk_predictions %}
+          <div class="stats">
+            <h5>Results Summary:</h5>
+            <p>
+              Total transactions processed: <strong>{{ total_rows }}</strong><br />
+              Frauds detected: <strong>{{ fraud_count }}</strong> ({{ fraud_percent }}%)<br />
+              Legitimate: <strong>{{ not_fraud_count }}</strong>
+            </p>
+          </div>
+
+          <h3>Prediction Results (Showing {{ total_rows }} rows)</h3>
+
+          <div class="results-table">
+            <div class="table-responsive">
+              {{ bulk_predictions|safe }}
+            </div>
+          </div>
+
+          <!-- Graph Toggle Button -->
+          <button id="showChartBtn" class="btn btn-outline-primary mt-4 w-100">
+            📊 Graph Analytics
+          </button>
+
+          <!-- Chart Container -->
+          <div id="chartContainer" style="display: none; margin-top: 20px;">
+            <canvas id="fraudPieChart"></canvas>
+          </div>
+
+          <!-- ✅ Chart Script -->
+          <script>
+            document.getElementById("showChartBtn").addEventListener("click", () => {
+              const container = document.getElementById("chartContainer");
+              const btn = document.getElementById("showChartBtn");
+              if (container.style.display === "none") {
+                container.style.display = "block";
+                btn.textContent = "🔽 Hide Graph Analytics";
+              } else {
+                container.style.display = "none";
+                btn.textContent = "📊 Graph Analytics";
+              }
+            });
+
+           const fraudCount = parseInt("{{ fraud_count or 0 }}");
+           const legitCount = parseInt("{{ not_fraud_count or 0 }}");
+
+
+            const ctx = document.getElementById("fraudPieChart").getContext("2d");
+            new Chart(ctx, {
+              type: "pie",
+              data: {
+                labels: ["Fraud", "Not Fraud"],
+                datasets: [{
+                  data: [fraudCount, legitCount],
+                  backgroundColor: ["#FF6384", "#36A2EB"],
+                }],
+              },
+              options: {
+                responsive: true,
+                plugins: {
+                  legend: { position: "top" },
+                  title: { display: true, text: "Fraud vs Not Fraud Distribution" },
+                },
+              },
+            });
+          </script>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</body>
+</html>
+
+

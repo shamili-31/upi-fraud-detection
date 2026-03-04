@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>UPI QR Code Scanner</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Bootstrap CSS -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+
+  <style>
+    body {
+      background: #f8f9fa;
+      font-family: Arial, sans-serif;
+      padding-top: 60px;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .card {
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    .card-header {
+      background-color: #ffffff;
+      border-bottom: none;
+      font-size: 1.3rem;
+      font-weight: 600;
+      text-align: center;
+    }
+    .card-body {
+      background-color: #ffffff;
+    }
+    .scanner {
+      width: 100%;
+      max-width: 400px;
+      margin: 0 auto;
+    }
+    .result-box {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="card mb-4">
+      <div class="card-header">
+        📷 UPI QR Code Scanner & Analyzer
+      </div>
+      <div class="card-body">
+        <p>
+          Scan a UPI QR code using your webcam or paste the UPI URL string below to check its safety. 
+        </p>
+
+        <!-- Webcam Scanner Section -->
+        <div class="mb-4">
+          <h6>Live Webcam Scanner:</h6>
+          <div id="reader" class="scanner"></div>
+          <div id="scanResult" class="result-box"></div>
+        </div>
+
+        <hr />
+
+        <!-- Manual Paste Section -->
+        <div class="mb-4">
+          <h6>Paste UPI QR String:</h6>
+          <textarea
+            id="upiInput"
+            class="form-control"
+            rows="3"
+            placeholder="e.g. upi://pay?pa=xyz@bank&amp;pn=John Doe&amp;am=500"
+          ></textarea>
+          <button
+            class="btn btn-warning mt-2 w-100"
+            onclick="analyzeQR()"
+          >
+            🔍 Analyze Pasted UPI
+          </button>
+          <div id="qrResult" class="result-box"></div>
+        </div>
+
+        <hr />
+
+        <!-- Back to Dashboard -->
+        <div class="text-center">
+          <a href="{{ url_for('index') }}" class="btn btn-secondary">Back to Dashboard</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS & html5-qrcode JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+<script>
+  function analyzeQR() {
+    const upiString = document.getElementById("upiInput").value;
+    const resultDiv = document.getElementById("qrResult");
+
+    if (!upiString) {
+      resultDiv.innerHTML =
+        '<div class="alert alert-danger">Please paste a UPI URL string.</div>';
+      return;
+    }
+
+    fetch("/analyze", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ upi_string: upiString }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        const result = data.result;
+        const isSafe = result.includes("✅");
+        resultDiv.innerHTML = `<div class="alert ${
+          isSafe ? "alert-success" : "alert-danger"
+        }">${result}</div>`;
+      })
+      .catch((err) => {
+        resultDiv.innerHTML =
+          '<div class="alert alert-danger">Error analyzing QR.</div>';
+      });
+  }
+
+  function onScanSuccess(decodedText, decodedResult) {
+    const resultDiv = document.getElementById("scanResult");
+    resultDiv.innerHTML = `
+      <p><strong>Scanned UPI:</strong> ${decodedText}</p>
+      <p>Analyzing...</p>
+    `;
+
+    fetch("/analyze", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ upi_string: decodedText }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        const result = data.result;
+        const isSafe = result.includes("✅");
+        resultDiv.innerHTML += `<div class="alert ${
+          isSafe ? "alert-success" : "alert-danger"
+        }">${result}</div>`;
+
+        // Add Scan Another button
+        resultDiv.innerHTML += `
+          <button id="scanAgainBtn" class="btn btn-primary mt-3">Scan Another QR</button>
+        `;
+
+        // Add event listener to button
+        document.getElementById("scanAgainBtn").addEventListener("click", () => {
+          // Clear previous result
+          resultDiv.innerHTML = "";
+          // Restart scanner
+          html5QrcodeScanner.render(onScanSuccess);
+        });
+      })
+      .catch(() => {
+        resultDiv.innerHTML +=
+          '<div class="alert alert-danger">Error analyzing scanned QR.</div>';
+      });
+
+    html5QrcodeScanner.clear(); // stop scanning after one successful scan
+  }
+
+  const html5QrcodeScanner = new Html5QrcodeScanner("reader", {
+    fps: 10,
+    qrbox: 250,
+  });
+
+  html5QrcodeScanner.render(onScanSuccess);
+</script>
+</body>
+</html>
+
+

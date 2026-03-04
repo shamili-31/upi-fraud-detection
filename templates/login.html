@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>LOGIN |UPI Fraud Detection</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="login-bg">  <!-- Add a class to target the background -->
+    <div class="login-container">
+        <form action="{{ url_for('login') }}" method="POST" class="login-card">
+    <h3>LOGIN</h3>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="flash {{ category }}">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <label for="email">Email</label>
+    <input type="email" name="email" required>
+
+    <label for="password">Password</label>
+    <input type="password" name="password" required>
+
+    <!-- Add reCAPTCHA widget -->
+    <div class="g-recaptcha" data-sitekey="6LeadlQrAAAAAGF8zrpax07UhnCLoRTPXi-uj6bM"></div>
+
+    <button type="submit">Log In</button>
+    <p>Don't have an account? <a href="{{ url_for('register') }}">Register</a></p>
+</form>
+
+<!-- Load the reCAPTCHA API JS -->
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+    </div>
+</body>
+</html>
+
+    

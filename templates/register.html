@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register | UPI Fraud Detection</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .strength-meter {
+            height: 8px;
+            width: 100%;
+            background-color: #ddd;
+            margin-top: 5px;
+            border-radius: 4px;
+        }
+        .strength-meter-fill {
+            height: 100%;
+            width: 0%;
+            background-color: red;
+            transition: width 0.4s ease-in-out, background-color 0.4s ease-in-out;
+            border-radius: 4px;
+        }
+        .strength-text {
+            font-size: 0.9em;
+            margin-top: 5px;
+            font-weight: bold;
+        }
+        .password-tips {
+            font-size: 0.85em;
+            margin-top: 5px;
+            color: #555;
+        }
+        .password-tips span {
+            color: red;
+        }
+        .password-tips .valid {
+            color: green;
+        }
+    </style>
+</head>
+<body class="login-bg">
+    <div class="login-container">
+        <form action="{{ url_for('register') }}" method="POST" class="login-card">
+            <h3>REGISTER</h3>
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+              {% if messages %}
+                {% for category, message in messages %}
+                  <div class="flash {{ category }}">{{ message }}</div>
+                {% endfor %}
+              {% endif %}
+            {% endwith %}
+
+            <label for="username">Username</label>
+            <input type="text" name="username" required>
+
+            <label for="email">Email</label>
+            <input type="email" name="email" required>
+
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" name="phone" pattern="[0-9]{10}" maxlength="10" placeholder="Enter 10-digit number" required>
+
+            <label for="password">Password</label>
+            <input type="password" name="password" id="password" required>
+            <div class="strength-meter">
+                <div class="strength-meter-fill" id="strengthMeterFill"></div>
+            </div>
+            <div class="strength-text" id="strengthText"></div>
+            <div class="password-tips" id="passwordTips">
+                Must include: 
+                <span id="lengthTip">8+ characters</span>, 
+                <span id="upperTip">uppercase</span>, 
+                <span id="lowerTip">lowercase</span>, 
+                <span id="digitTip">digit</span>, 
+                <span id="specialTip">special character</span>
+            </div>
+
+            <button type="submit">Register</button>
+            <p>Already have an account? <a href="{{ url_for('login') }}">Login</a></p>
+        </form>
+    </div>
+
+    <script>
+        const passwordInput = document.getElementById('password');
+        const strengthMeterFill = document.getElementById('strengthMeterFill');
+        const strengthText = document.getElementById('strengthText');
+
+        const lengthTip = document.getElementById('lengthTip');
+        const upperTip = document.getElementById('upperTip');
+        const lowerTip = document.getElementById('lowerTip');
+        const digitTip = document.getElementById('digitTip');
+        const specialTip = document.getElementById('specialTip');
+
+        passwordInput.addEventListener('input', function() {
+            const val = passwordInput.value;
+            let strength = 0;
+
+            if (val.length >= 8) {
+                strength++; lengthTip.classList.add('valid');
+            } else { lengthTip.classList.remove('valid'); }
+
+            if (/[A-Z]/.test(val)) {
+                strength++; upperTip.classList.add('valid');
+            } else { upperTip.classList.remove('valid'); }
+
+            if (/[a-z]/.test(val)) {
+                strength++; lowerTip.classList.add('valid');
+            } else { lowerTip.classList.remove('valid'); }
+
+            if (/\d/.test(val)) {
+                strength++; digitTip.classList.add('valid');
+            } else { digitTip.classList.remove('valid'); }
+
+            if (/[!@#$%^&*(),.?]/.test(val)) {
+                strength++; specialTip.classList.add('valid');
+            } else { specialTip.classList.remove('valid'); }
+
+            const percent = (strength / 5) * 100;
+            strengthMeterFill.style.width = percent + '%';
+
+            if (strength <= 2) {
+                strengthMeterFill.style.backgroundColor = 'red';
+                strengthText.textContent = 'Weak';
+            } else if (strength === 3 || strength === 4) {
+                strengthMeterFill.style.backgroundColor = 'orange';
+                strengthText.textContent = 'Moderate';
+            } else {
+                strengthMeterFill.style.backgroundColor = 'green';
+                strengthText.textContent = 'Strong';
+            }
+        });
+    </script>
+</body>
+</html>
+
+
