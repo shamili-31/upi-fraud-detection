@@ -1,44 +1,129 @@
-# UPI Fraud Detection System
+# 🔍 UPI Fraud Detection System
 
-This project is a machine learning based web application that detects fraudulent UPI transactions. 
-It analyzes transaction details and predicts whether a transaction is fraudulent or legitimate.
+A machine learning-based web application that detects potentially fraudulent UPI transactions in real time.
+The system analyzes transaction attributes and predicts whether a transaction is **legitimate or suspicious**, helping improve digital payment security.
 
-## Features
-- Detects fraudulent UPI transactions using machine learning
-- User-friendly web interface for entering transaction details
-- Real-time prediction results
-- Helps improve security in digital payment systems
+---
 
-## Technologies Used
-- Python
-- Flask
-- Scikit-learn
-- XGBoost
-- HTML
-- CSS
-- Machine Learning
+## 🚀 Project Overview
 
-## Project Structure
+With the rapid growth of digital payments, fraud detection has become a critical requirement for financial systems.
+This project uses **machine learning algorithms and a Flask-based web interface** to identify suspicious UPI transactions based on transaction patterns and behavioral features.
+
+The application allows users to input transaction details through a web interface and instantly receive a fraud prediction result.
+
+---
+
+## ✨ Key Features
+
+* 🔐 **Machine Learning Based Fraud Detection**
+* ⚡ **Real-Time Transaction Prediction**
+* 🌐 **Interactive Web Interface using Flask**
+* 📊 **Transaction Pattern Analysis**
+* 🧠 **Model trained using Scikit-learn & XGBoost**
+* 🖥 **User-friendly dashboard for predictions**
+
+---
+
+## 🛠 Technologies Used
+
+**Programming & Backend**
+
+* Python
+* Flask
+
+**Machine Learning**
+
+* Scikit-learn
+* XGBoost
+* Pandas
+* NumPy
+
+**Frontend**
+
+* HTML
+* CSS
+
+**Tools**
+
+* Git & GitHub
+* VS Code
+* Jupyter Notebook
+
+---
+
+## 📂 Project Structure
+
 UPI-FRAUD-DETECTION
+
 │
-├── app.py
-├── model.pkl
-├── requirements.txt
-├── templates/
-└── static/
+├── app.py                 → Main Flask application
+├── models/                → Trained ML models
+├── templates/             → HTML pages (UI)
+├── static/                → CSS and assets
+├── requirements.txt       → Project dependencies
+├── config.py              → Configuration settings
+└── README.md              → Project documentation
 
-## How to Run the Project
-1. Clone the repository
-2. Install dependencies using:
-   pip install -r requirements.txt
-3. Run the application:
-   python app.py
-4. Open the browser and access the web application
+---
 
-## Future Improvements
-- Add real time transaction monitoring
-- Improve fraud detection accuracy
-- Deploy the application online
+## ⚙️ How the System Works
 
-## Author
-Shamili
+1. User enters transaction details in the web interface.
+2. The Flask backend processes the input.
+3. The trained machine learning model analyzes the transaction.
+4. The system predicts whether the transaction is **fraudulent or legitimate**.
+5. The result is displayed instantly on the dashboard.
+
+---
+
+## ▶️ How to Run the Project
+
+### 1️⃣ Clone the Repository
+
+git clone https://github.com/shamili-31/upi-fraud-detection.git
+
+### 2️⃣ Navigate to the Project Folder
+
+cd upi-fraud-detection
+
+### 3️⃣ Install Required Dependencies
+
+pip install -r requirements.txt
+
+### 4️⃣ Run the Application
+
+python app.py
+
+### 5️⃣ Open in Browser
+
+http://127.0.0.1:5000/
+
+---
+
+## 📸 Sample Output
+
+The system displays whether a transaction is **safe or suspicious** based on model prediction.
+
+You can also include screenshots of the application interface here.
+
+---
+
+## 🔮 Future Improvements
+
+* Deploy the application to a cloud platform
+* Add real-time transaction monitoring
+* Improve model accuracy with larger datasets
+* Implement advanced anomaly detection techniques
+
+---
+
+## 👩‍💻 Author
+
+**Shamili**
+
+Computer Science Graduate
+Interested in **AI, Machine Learning, and Web Development**
+
+GitHub: https://github.com/shamili-31
+
